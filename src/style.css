@@ -1,8 +1,26 @@
-html {
-  color-scheme: light dark;
-  font-family: system-ui;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+@import "tailwindcss";
+@theme {
+    --font-receipt: "receiptional_receiptregular", monospace;
+    --animate-marquee: marquee 10s linear infinite;
+    @keyframes marquee {
+        0% { transform: translateX(0%); }
+        100% { transform: translateX(-100%); }
+    }
+}
+@font-face {
+    font-family: 'receiptional_receiptregular';
+    src: url('receiptional_receipt.woff2') format('woff2'),
+         url('receiptional_receipt.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#jukebox {
+    @apply scale-75 origin-top-left font-receipt;
+}
+.track {
+    @apply cursor-pointer overflow-hidden whitespace-nowrap;
+}
+.track-content {
+    @apply inline-block;
 }
