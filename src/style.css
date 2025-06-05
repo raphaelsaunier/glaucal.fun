@@ -14,13 +14,27 @@
     font-weight: normal;
     font-style: normal;
 }
-
+.dark {
+    @apply bg-black text-white;
+}
+#logo {
+    @apply text-black border-black bg-white fixed h-30 aspect-square border border-2 flex items-center justify-center rounded-full top-2 left-2 z-10;
+}
+.dark #logo {
+    @apply text-white border-white bg-black;
+}
 #jukebox {
-    @apply scale-75 origin-top-left font-receipt;
+    @apply font-receipt relative;
 }
 .track {
     @apply cursor-pointer overflow-hidden whitespace-nowrap;
 }
+.track.active {
+    @apply font-bold;
+}
 .track-content {
     @apply inline-block;
+}
+.track.active .track-content {
+    @apply animate-marquee;
 }

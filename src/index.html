@@ -10,26 +10,23 @@
     <link href="./style.css" type="text/css" rel="stylesheet" />
     <script src="./main.ts" type="module"></script>
   </head>
-  <body class="transition-all">
-    <div
-      class="fixed h-30 aspect-square flex items-center justify-center text-white rounded-full bg-black top-2 left-2 z-10"
-    >
-      glaucal.fun
+  <body class="transition-all overflow-hidden">
+    <div id="logo">glaucal.fun</div>
+
+    <div id="jukebox">
+      <video
+        id="video-player"
+        class="relative h-[1440px] w-[2550px] max-w-none max-h-none"
+        preload="auto"
+        autoplay
+        loop
+        muted
+        playsinline
+        poster="/static/poster.png"
+      ></video>
+      <audio id="audio-player"></audio>
     </div>
-    <div id="parent" class="h-[1440px] w-[2550px]">
-      <div id="jukebox" class="h-[1440px] w-[2550px]">
-        <video
-          id="video-player"
-          preload="auto"
-          autoplay
-          loop
-          muted
-          playsinline
-          poster="/static/poster.png"
-        ></video>
-        <audio id="audio-player"></audio>
-      </div>
-    </div>
+
     <div class="fixed bottom-2 left-2 z-10">
       <input
         type="range"
