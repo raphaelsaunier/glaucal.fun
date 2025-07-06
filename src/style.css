@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
     --font-receipt: "receiptional_receiptregular", monospace;
     --animate-marquee: marquee 10s linear infinite;
@@ -14,27 +16,76 @@
     font-weight: normal;
     font-style: normal;
 }
+html, body {
+    @apply fixed inset-0 p-0 m-0;
+}
 .dark {
     @apply bg-black text-white;
 }
 #logo {
-    @apply text-black border-black bg-white fixed h-30 aspect-square border border-2 flex items-center justify-center rounded-full top-2 left-2 z-10;
+    @apply top-2 left-2 z-30 fixed p-4;
 }
-.dark #logo {
-    @apply text-white border-white bg-black;
+#logo img {
+    @apply h-32 aspect-square;
 }
+#volume-control {
+    @apply fixed bottom-2 left-2 z-20;
+}
+
+#logo, #volume-control {
+    @apply bg-white/80 rounded-full;
+}
+.dark #logo, .dark #volume-control {
+    @apply bg-black/80;
+}
+
+#volume-control input[type="range"] {
+    @apply absolute top-4 left-13 h-2;
+}
+
+#volume-control button {
+    @apply absolute top-0 left-0 h-10 w-12  cursor-pointer;
+}
+
+
 #jukebox {
-    @apply font-receipt relative;
+    @apply font-receipt relative z-10;
 }
 .track {
-    @apply cursor-pointer overflow-hidden whitespace-nowrap;
+    @apply cursor-pointer z-10  absolute mt-2 px-[5px] py-[10px]
 }
 .track.active {
     @apply font-bold;
 }
-.track-content {
-    @apply inline-block;
+.track__content {
+    @apply block mr-9 overflow-hidden whitespace-nowrap;
 }
-.track.active .track-content {
+.track.active .track__title {
     @apply animate-marquee;
+}
+
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    input[type='range'] {
+      overflow: hidden;
+      width: 80px;
+      -webkit-appearance: none;
+    }
+    
+    input[type='range']::-webkit-slider-runnable-track {
+      height: 10px;
+      -webkit-appearance: none;
+      /* color: black; */
+      margin-top: -1px;
+    }
+    
+    input[type='range']::-webkit-slider-thumb {
+      width: 10px;
+      -webkit-appearance: none;
+      height: 10px;
+      cursor: ew-resize;
+      background: black;
+      box-shadow: -80px 0 0 80px black;
+    }
+
 }

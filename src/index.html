@@ -6,17 +6,47 @@
       name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
     />
-    <title>Glaucal Crystal Jukebox 2</title>
+    <title>Glaucal Crystal Jukebox 🎵</title>
     <link href="./style.css" type="text/css" rel="stylesheet" />
+    <link rel="icon" href="/static/favicon.png" />
+    <!-- OG Preview -->
+    <meta property="og:title" content="Glaucal Crystal Jukebox" />
+    <meta
+      property="og:description"
+      content="L’association Glaucal est basée à Courfaivre, dans le Jura suisse. Elle gère un lieu indépendant propice à la création artistique, principalement musicale. En 2023, elle fête ses 15 ans (noces de cristal). À cette occasion, Josué et Pascal imaginent ce qui deviendra la Cristal Session : trois jours d’enregistrements sur le vif et ouverts à tou·te·s."
+    />
+    <meta property="og:image" content="/static/preview.png" />
+    <meta property="og:url" content="https://glaucal.fun" />
     <script src="./main.ts" type="module"></script>
   </head>
   <body class="transition-all overflow-hidden">
-    <div id="logo">glaucal.fun</div>
+    <div id="logo">
+      <img
+        src="/static/logo-dark.png"
+        alt="Glaucal Crystal Jukebox"
+        class="hidden dark:block"
+      />
+      <img
+        src="/static/logo-light.png"
+        alt="Glaucal Crystal Jukebox"
+        class="block dark:hidden"
+      />
+    </div>
 
-    <div id="jukebox">
+    <div id="jukebox" class="h-[1440px] w-[2550px]">
       <video
-        id="video-player"
-        class="relative h-[1440px] w-[2550px] max-w-none max-h-none"
+        id="video-player-1"
+        class="absolute h-[1440px] w-[2550px] max-w-none max-h-none transition-opacity duration-500"
+        preload="auto"
+        autoplay
+        loop
+        muted
+        playsinline
+        poster="/static/poster.png"
+      ></video>
+      <video
+        id="video-player-2"
+        class="absolute h-[1440px] w-[2550px] max-w-none max-h-none transition-opacity duration-500"
         preload="auto"
         autoplay
         loop
@@ -27,7 +57,10 @@
       <audio id="audio-player"></audio>
     </div>
 
-    <div class="fixed bottom-2 left-2 z-10">
+    <div id="volume-control" data-state="muted" class="no-pan">
+      <img src="/static/volume-full.png" alt="Volume" class="h-10" />
+      <button id="mute" 
+      class="h-10 w-10"></button>
       <input
         type="range"
         id="volume-control"
@@ -37,5 +70,13 @@
         value="1"
       />
     </div>
+    <article>
+      <p>L’association Glaucal est basée à Courfaivre, dans le Jura suisse. Elle gère un lieu indépendant propice à la création artistique, principalement musicale. En 2023, elle fête ses 15 ans (noces de cristal). À cette occasion, Josué et Pascal imaginent ce qui deviendra la Cristal Session : trois jours d’enregistrements sur le vif et ouverts à tou·te·s.</p>
+      <p></p>Du 29 septembre au 1er octobre 2023, c’est une vingtaine de personnes qui se sont retrouvé·e·s pour improviser et enregistrer vingt morceaux joués de manière spontanée et sans contrainte.</p>
+      <p>Nous sommes heureux de vous les partager sous la forme d’un joli jukebox illustré par Valentine Moser et mis en ligne par Raphaël Saunier.</p>
+      <p>Enregistré sur le vif par Pascal Lopinat & Josué Salomon @ Glaucal Mixage & masterisation par Josué Salomon</p>
+      <p>Ont participé à la Cristal Session (dans l’ordre alphabethique) :</p>
+      <p>Quentin Barth, Nina Bietry, Kiril Buga, Guillaume Christe, Nil Flückiger, Lionel Gerber, Luca Jungo, Fox Kijango, Guillaume Lachat, Jonas Lachat, Thomas Lachat, Pascal Lopinat, Tiffany Meyer, Célien Montavon, Ludovic Payet, Gérald Pittet, Simon Prongué, Matteo Roth, Josué Salomon, Alice Voisard, Marius Voisard, Mathieu Voisard.</p>
+    </article>
   </body>
 </html>

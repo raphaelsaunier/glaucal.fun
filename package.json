@@ -1,5 +1,5 @@
 {
-  "name": "parcel-vanilla-starter",
+  "name": "glaucal-crystal-jukebox",
   "private": true,
   "version": "0.0.0",
   "source": "src/index.html",
@@ -14,9 +14,8 @@
     "tailwindcss": "^4.1.4"
   },
   "dependencies": {
-    "@use-gesture/vanilla": "^10.3.1",
+    "lodash": "^4.17.21",
     "panzoom": "^9.4.3",
-    "pinch-zoom-js": "^2.3.5",
     "serve-static": "^2.2.0"
   }
 }

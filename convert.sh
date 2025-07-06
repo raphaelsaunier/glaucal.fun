@@ -1,23 +1,23 @@
-ffmpeg -i "./input/video/GlaucalFun_01_haut-parleurs.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/01-hauts-parleurs.webm"
-ffmpeg -i "./input/video/GlaucalFun_02_ça-tourne8fps.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/02-ca-tourne8fps.webm"
-ffmpeg -i "./input/video/GlaucalFun_03_cymbale.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/03-cymbale.webm"
-ffmpeg -i "./input/video/GlaucalFun_04_plante.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/04-plante.webm"
-ffmpeg -i "./input/video/GlaucalFun_05_helices.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/05-helices.webm"
-ffmpeg -i "./input/video/GlaucalFun_06_cadre-photo.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/06-cadre-photo.webm"
-ffmpeg -i "./input/video/GlaucalFun_07_réparer-la-machine.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/07-réparer-la-machine.webm"
-ffmpeg -i "./input/video/GlaucalFun_08_chercher-vinyle.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/08-chercher-vinyle.webm"
-ffmpeg -i "./input/video/GlaucalFun_09_lecture.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/09-lecture.webm"
-ffmpeg -i "./input/video/GlaucalFun_10_fleur-a-vent.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/10-fleur-a-vent.webm"
-ffmpeg -i "./input/video/GlaucalFun_11_tourner-sur-tabouret.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/11-tourner-sur-tabouret.webm"
-ffmpeg -i "./input/video/GlaucalFun_12_ou-va-le-cable.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/12-ou-va-le-cable.webm"
-ffmpeg -i "./input/video/GlaucalFun_13_tous-les-boutons.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/13-tous-les-boutons.webm"
-ffmpeg -i "./input/video/GlaucalFun_14_climatisation.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/14-climatisation.webm"
-ffmpeg -i "./input/video/GlaucalFun_15_lampe.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/15-lampe.webm"
-ffmpeg -i "./input/video/GlaucalFun_16_bricolage.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/16-bricolage.webm"
-ffmpeg -i "./input/video/GlaucalFun_17_trier-les-vis.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/17-trier-les-vis.webm"
-ffmpeg -i "./input/video/GlaucalFun_18_cafetière.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/18-cafetiere.webm"
-ffmpeg -i "./input/video/GlaucalFun_19_machines-musique.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/19-machines-musique.webm"
-ffmpeg -i "./input/video/GlaucalFun_20_couché-par-terre.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/20-couché-par-terre.webm"
+ffmpeg -i "./input/video/GlaucalFun_01_haut-parleurs_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/01-hauts-parleurs_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_02_ça-tourne8fps_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/02-ca-tourne8fps_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_03_cymbale_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/03-cymbale_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_04_plante_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/04-plante_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_05_helices_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/05-helices_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_06_cadre-photo_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/06-cadre-photo_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_07_réparer-la-machine_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/07-réparer-la-machine_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_08_chercher-vinyle_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/08-chercher-vinyle_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_09_lecture_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/09-lecture_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_10_fleur-a-vent_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/10-fleur-a-vent_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_11_tourner-sur-tabouret_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/11-tourner-sur-tabouret_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_12_ou-va-le-cable_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/12-ou-va-le-cable_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_13_tous-les-boutons_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/13-tous-les-boutons_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_14_climatisation_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/14-climatisation_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_15_lampe_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/15-lampe_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_16_bricolage_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/16-bricolage_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_17_trier-les-vis_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/17-trier-les-vis_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_18_cafetière_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/18-cafetiere_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_19_machines-musique_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/19-machines-musique_02.webm"
+ffmpeg -i "./input/video/GlaucalFun_20_couché-par-terre_02.mov" -c:v libvpx-vp9 -b:v 1M -crf 30 -profile:v 0 -pix_fmt yuv420p -an -f webm "./output/20-couché-par-terre_02.webm"
 
 ffmpeg -i "./input/audio/01. La garderie d_art.wav" -acodec mp3 ./output/01-la-garderie-d-art.mp3
 ffmpeg -i "./input/audio/02. Ça tourne.wav" -acodec mp3 ./output/02-ca-tourne.mp3
@@ -29,7 +29,7 @@ ffmpeg -i "./input/audio/07. Patadorf.wav" -acodec mp3 ./output/07-patadorf.mp3
 ffmpeg -i "./input/audio/08. Buddah.com.wav" -acodec mp3 ./output/08-buddah-com.mp3
 ffmpeg -i "./input/audio/09. Alice & Marius.wav" -acodec mp3 ./output/09-alice-marius.mp3
 ffmpeg -i "./input/audio/10. Elephant_sadness.wav" -acodec mp3 ./output/10-elephant-sadness.mp3
-ffmpeg -i "./input/audio/11. Thérapie de groupe.wav" -acodec mp3 ./output/11-therape-de-groupe.mp3
+ffmpeg -i "./input/audio/11. Thérapie de groupe.wav" -acodec mp3 ./output/11-therapie-de-groupe.mp3
 ffmpeg -i "./input/audio/12. Le jambon c_est si bon.wav" -acodec mp3 ./output/12-le-jambon-c-est-si-bon.mp3
 ffmpeg -i "./input/audio/13. Attack of the cows.wav" -acodec mp3 ./output/13-attack-of-the-cows.mp3
 ffmpeg -i "./input/audio/14. À nos beurgueurs.wav" -acodec mp3 ./output/14-a-nos-beurgueurs.mp3
