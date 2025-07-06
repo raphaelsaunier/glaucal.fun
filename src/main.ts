@@ -12,14 +12,23 @@ const videoPlayer2 = document.getElementById(
 const audioPlayer = document.getElementById(
   "audio-player"
 )! as HTMLAudioElement;
-const volumeControl = document.getElementById(
-  "volume-control"
+const volumeSlider = document.querySelector(
+  "#volume-control input[type='range']"
 )! as HTMLInputElement;
+const volumeIndicator = document.querySelector(
+  "#volume-control img"
+)! as HTMLImageElement;
+const muteButton = document.querySelector(
+  "#volume-control button"
+)! as HTMLButtonElement;
 
 // Track which video player is currently active
 let currentPlayer: "player1" | "player2" = "player1";
 // Track the currently playing track index
 let currentTrackIndex: number = -1;
+
+// Store last non-zero volume to restore when unmuting
+let previousVolume = 1;
 
 const block = (e: TouchEvent) => {
   if (jukebox.contains(e.target as Node)) e.preventDefault();
@@ -33,22 +42,25 @@ function switchVideoPlayer(newSrc: string) {
     currentPlayer === "player1" ? videoPlayer1 : videoPlayer2;
   const nextPlayer = currentPlayer === "player1" ? videoPlayer2 : videoPlayer1;
 
+  // Make sure the next player starts fully hidden and the current stays visible
+  nextPlayer.classList.add("opacity-0");
+  nextPlayer.classList.remove("opacity-100");
+  activePlayer.classList.remove("opacity-0");
+  activePlayer.classList.add("opacity-100");
+
   // Set the new source on the inactive player
   nextPlayer.src = `/static/${newSrc}`;
 
-  // When the inactive player is ready, start the crossfade
-  nextPlayer.addEventListener("canplay", function onCanPlay() {
-    nextPlayer.removeEventListener("canplay", onCanPlay);
-
-    // Start playing the new video
-    nextPlayer.play();
+  // When the inactive player is ready, start the cross-fade
+  const onCanPlay = () => {
+    // Start playing the new video (ignore promise for older browsers)
+    void nextPlayer.play();
 
     // Fade out current player and fade in new player
     activePlayer.classList.add("opacity-0");
+    activePlayer.classList.remove("opacity-100");
     nextPlayer.classList.remove("opacity-0");
     nextPlayer.classList.add("opacity-100");
-    // activePlayer.style.opacity = "0";
-    // inactivePlayer.style.opacity = "1";
 
     // Switch the current player reference
     currentPlayer = currentPlayer === "player1" ? "player2" : "player1";
@@ -59,11 +71,12 @@ function switchVideoPlayer(newSrc: string) {
     setTimeout(() => {
       activePlayer.pause();
     }, 500); // Match the CSS transition duration
-  });
+  };
 
-  // Load the new video
+  nextPlayer.addEventListener("canplay", onCanPlay, { once: true });
+
+  // Start loading the new video
   nextPlayer.load();
-  nextPlayer.play();
 }
 
 function playTrack(trackIndex: number) {
@@ -101,8 +114,24 @@ function playNextTrack() {
   }
 }
 
+// Helper to update the volume icon according to current state
+function updateVolumeIndicator() {
+  const volume = audioPlayer.muted ? 0 : audioPlayer.volume;
+  let level: "mute" | "low" | "medium" | "high";
+  if (volume === 0) {
+    level = "mute";
+  } else if (volume <= 0.33) {
+    level = "low";
+  } else if (volume <= 0.66) {
+    level = "medium";
+  } else {
+    level = "high";
+  }
+  volumeIndicator.src = `/static/volume-${level}.png`;
+}
+
 function render() {
-  const [w, h] = [320, 32];
+  const [w, h] = [320, 32]; // Clickable box size
   const offsetY = 10;
   const offsetX = 5;
   for (const [index, track] of tracks.entries()) {
@@ -113,9 +142,9 @@ function render() {
     div.style.left = `${x - offsetX}px`;
     div.style.width = `${w + offsetX}px`;
     div.style.height = `${h + offsetY}px`;
-    div.innerHTML = `<div class="track__content"><div class="track__title">${deburr(
-      track.title
-    )}</div></div>`;
+    div.innerHTML = `<div class="track__content">
+      <div class="track__title">${deburr(track.title)}</div>
+    </div>`;
     div.title = track.title;
     div.addEventListener("click", (ev) => {
       playTrack(index);
@@ -123,9 +152,41 @@ function render() {
     jukebox?.appendChild(div);
   }
 
-  volumeControl.addEventListener("input", () => {
-    audioPlayer.volume = parseFloat(volumeControl.value);
+  volumeSlider.addEventListener("input", () => {
+    const value = parseFloat(volumeSlider.value);
+    audioPlayer.volume = value;
+
+    // Automatically toggle muted state depending on slider value
+    if (value === 0) {
+      audioPlayer.muted = true;
+    } else {
+      audioPlayer.muted = false;
+      previousVolume = value;
+    }
+
+    updateVolumeIndicator();
   });
+
+  // Toggle mute / unmute when clicking on the icon or button
+  muteButton.addEventListener("click", () => {
+    if (audioPlayer.muted || audioPlayer.volume === 0) {
+      // Unmute and restore previous volume (or default to full volume)
+      const restored = previousVolume || 1;
+      audioPlayer.muted = false;
+      audioPlayer.volume = restored;
+      volumeSlider.value = restored.toString();
+    } else {
+      // Mute – remember current volume so we can restore it later
+      previousVolume = audioPlayer.volume || 1;
+      audioPlayer.muted = true;
+      volumeSlider.value = "0";
+    }
+
+    updateVolumeIndicator();
+  });
+
+  // Initial icon state
+  updateVolumeIndicator();
 
   // Add event listener for when a track ends
   audioPlayer.addEventListener("ended", playNextTrack);
@@ -137,8 +198,12 @@ function render() {
     bounds: true,
     onTouch: (event) => {
       if (!(event.target instanceof HTMLElement)) return;
-      console.log(event.target.closest(".no-pan"));
-      if (event.target.closest(".no-pan")) return false;
+      if (!event.target.closest(".no-pan")) return false;
+    },
+    beforeMouseDown: (event) => {
+      if (!(event.target instanceof HTMLElement)) return;
+      if (!event.target.closest(".no-pan")) return false;
+      return true;
     },
   });
 }

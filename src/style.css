@@ -33,59 +33,61 @@ html, body {
 }
 
 #logo, #volume-control {
-    @apply bg-white/80 rounded-full;
+    @apply bg-white/95 rounded-lg;
 }
 .dark #logo, .dark #volume-control {
-    @apply bg-black/80;
+    @apply bg-black/95;
+}
+
+#volume-control img {
+    @apply h-10 dark:invert;
 }
 
 #volume-control input[type="range"] {
-    @apply absolute top-4 left-13 h-2;
+    @apply absolute top-4 left-12 h-2;
 }
 
 #volume-control button {
     @apply absolute top-0 left-0 h-10 w-12  cursor-pointer;
 }
 
-
 #jukebox {
     @apply font-receipt relative z-10;
+}
+.video-player {
+    @apply absolute h-[1440px] w-[2550px] max-w-none max-h-none transition-opacity duration-500
 }
 .track {
     @apply cursor-pointer z-10  absolute mt-2 px-[5px] py-[10px]
 }
-.track.active {
-    @apply font-bold;
-}
 .track__content {
     @apply block mr-9 overflow-hidden whitespace-nowrap;
 }
-.track.active .track__title {
+.track.active .track__title, .track:hover .track__title {
     @apply animate-marquee;
 }
 
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     input[type='range'] {
-      overflow: hidden;
-      width: 80px;
-      -webkit-appearance: none;
+        @apply appearance-none w-[86px] bg-transparent;
     }
     
     input[type='range']::-webkit-slider-runnable-track {
-      height: 10px;
-      -webkit-appearance: none;
-      /* color: black; */
-      margin-top: -1px;
+        @apply h-2 cursor-ew-resize overflow-hidden;
     }
-    
-    input[type='range']::-webkit-slider-thumb {
-      width: 10px;
-      -webkit-appearance: none;
-      height: 10px;
-      cursor: ew-resize;
-      background: black;
-      box-shadow: -80px 0 0 80px black;
+    input[type='range']::-webkit-slider-thumb,
+    input[type='range']::-moz-range-thumb {
+        @apply w-0.5 h-2 cursor-ew-resize appearance-none;
+        box-shadow: -80px 0 0 80px black;
     }
 
+    input[type=range]::-webkit-slider-runnable-track,
+    input[type=range]::-moz-range-track {
+        @apply h-full w-full;
+    }
+
+    .dark input[type='range']::-webkit-slider-thumb {
+        accent-color: white;
+    }
 }
