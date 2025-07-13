@@ -23,20 +23,23 @@ html, body {
     @apply bg-black text-white;
 }
 #logo {
-    @apply top-2 left-2 z-30 fixed p-4;
+    @apply top-2 left-2 z-30 fixed p-4 cursor-pointer transition-transform hover:scale-105;
 }
 #logo img {
-    @apply h-32 aspect-square;
+    @apply min-h-24 max-h-64 h-[20vw];
 }
 #volume-control {
     @apply fixed bottom-2 left-2 z-20;
 }
 
-#logo, #volume-control {
+#volume-control {
     @apply bg-white/95 rounded-lg;
 }
-.dark #logo, .dark #volume-control {
+.dark #volume-control {
     @apply bg-black/95;
+}
+.dark #volume-control img {
+    @apply invert;
 }
 
 #volume-control img {
@@ -52,13 +55,16 @@ html, body {
 }
 
 #jukebox {
-    @apply font-receipt relative z-10;
+    @apply font-receipt relative z-10 select-none;
 }
 .video-player {
-    @apply absolute h-[1440px] w-[2550px] max-w-none max-h-none transition-opacity duration-500
+    @apply absolute h-[1440px] w-[2550px] max-w-none max-h-none transition-opacity duration-500 isolate;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
 }
 .track {
-    @apply cursor-pointer z-10  absolute mt-2 px-[5px] py-[10px]
+    @apply cursor-pointer z-10  absolute mt-2 px-[5px] py-[10px] select-none;
 }
 .track__content {
     @apply block mr-9 overflow-hidden whitespace-nowrap;
@@ -70,10 +76,11 @@ html, body {
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     input[type='range'] {
-        @apply appearance-none w-[86px] bg-transparent;
+        @apply appearance-none w-[86px] bg-transparent overflow-hidden;
     }
     
-    input[type='range']::-webkit-slider-runnable-track {
+    input[type='range']::-webkit-slider-runnable-track,
+    input[type='range']::-moz-range-track {
         @apply h-2 cursor-ew-resize overflow-hidden;
     }
     input[type='range']::-webkit-slider-thumb,
@@ -90,4 +97,42 @@ html, body {
     .dark input[type='range']::-webkit-slider-thumb {
         accent-color: white;
     }
+    .dark input[type='range']::-webkit-slider-thumb,
+    .dark input[type='range']::-moz-range-thumb {
+        box-shadow: -80px 0 0 80px white;
+    }
+
+}
+
+/* Dialog styling */
+dialog {
+    @apply font-mono text-black dark:text-white bg-white dark:bg-gray-900 p-8 max-w-2xl w-[90vw] max-h-[90vh] overflow-y-auto
+    border-2 border-black z-50 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+    margin: 0;
+}
+
+@media (max-width: 640px) {
+    dialog {
+        @apply p-4;
+    }
+}
+
+.dark dialog {
+    @apply border-white bg-black;
+}
+
+dialog::backdrop {
+    @apply bg-white/80;
+    backdrop-filter: blur(4px);
+}
+.dark dialog::backdrop {
+    @apply bg-black/80;
+}
+
+dialog h2 {
+    @apply text-2xl mb-4;
+}
+
+dialog button {
+    @apply font-receipt;
 }

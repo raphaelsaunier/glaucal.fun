@@ -1,6 +1,7 @@
 import PanZoom from "panzoom";
 import { tracks } from "./config";
 import deburr from "lodash/deburr";
+import debounce from "lodash/debounce";
 
 const jukebox = document.getElementById("jukebox")!;
 const videoPlayer1 = document.getElementById(
@@ -29,6 +30,9 @@ let currentTrackIndex: number = -1;
 
 // Store last non-zero volume to restore when unmuting
 let previousVolume = 1;
+
+// Store the PanZoom instance to be able to dispose and recreate it
+let panZoomInstance: ReturnType<typeof PanZoom> | null = null;
 
 const block = (e: TouchEvent) => {
   if (jukebox.contains(e.target as Node)) e.preventDefault();
@@ -65,8 +69,6 @@ function switchVideoPlayer(newSrc: string) {
     // Switch the current player reference
     currentPlayer = currentPlayer === "player1" ? "player2" : "player1";
 
-    console.log("Current player", currentPlayer);
-
     // After transition completes, pause the now-hidden player
     setTimeout(() => {
       activePlayer.pause();
@@ -100,6 +102,13 @@ function playTrack(trackIndex: number) {
   document.documentElement.classList.toggle("dark", !!track.dark);
   document.documentElement.classList.toggle("light", !!track.dark);
 
+  // Update URL hash using the audio filename without extension
+  const hashName = track.audio.replace(".mp3", "");
+  history.replaceState(null, "", `#${hashName}`);
+
+  // Update window title
+  document.title = `${track.title} | Glaucal Cristal Session | Jukebox 🎶`;
+
   // Switch video and audio
   switchVideoPlayer(track.clip);
   audioPlayer.setAttribute("src", `/static/${track.audio}`);
@@ -111,6 +120,14 @@ function playNextTrack() {
     playTrack(currentTrackIndex + 1);
   } else {
     playTrack(0);
+  }
+}
+
+function playPreviousTrack() {
+  if (currentTrackIndex > 0) {
+    playTrack(currentTrackIndex - 1);
+  } else {
+    playTrack(tracks.length - 1);
   }
 }
 
@@ -130,7 +147,35 @@ function updateVolumeIndicator() {
   volumeIndicator.src = `/static/volume-${level}.png`;
 }
 
-function render() {
+function initializePanZoom() {
+  if (panZoomInstance) {
+    panZoomInstance.dispose();
+  }
+
+  const dialog = document.getElementById("about-dialog") as HTMLDialogElement;
+
+  panZoomInstance = PanZoom(jukebox, {
+    maxZoom: 2,
+    minZoom: 0.2,
+    autocenter: true,
+    bounds: true,
+    onTouch: (event) => {
+      // Prevent panning when dialog is open
+      if (dialog?.open) return false;
+      if (!(event.target instanceof HTMLElement)) return;
+      if (!event.target.closest(".no-pan")) return false;
+    },
+    beforeMouseDown: (event) => {
+      // Prevent panning when dialog is open
+      if (dialog?.open) return false;
+      if (!(event.target instanceof HTMLElement)) return;
+      if (!event.target.closest(".no-pan")) return false;
+      return true;
+    },
+  });
+}
+
+function renderTracks() {
   const [w, h] = [320, 32]; // Clickable box size
   const offsetY = 10;
   const offsetX = 5;
@@ -151,7 +196,9 @@ function render() {
     });
     jukebox?.appendChild(div);
   }
+}
 
+function initializeControls() {
   volumeSlider.addEventListener("input", () => {
     const value = parseFloat(volumeSlider.value);
     audioPlayer.volume = value;
@@ -190,24 +237,107 @@ function render() {
 
   // Add event listener for when a track ends
   audioPlayer.addEventListener("ended", playNextTrack);
-
-  const panZoom = PanZoom(jukebox, {
-    maxZoom: 2,
-    minZoom: 0.2,
-    autocenter: true,
-    bounds: true,
-    onTouch: (event) => {
-      if (!(event.target instanceof HTMLElement)) return;
-      if (!event.target.closest(".no-pan")) return false;
-    },
-    beforeMouseDown: (event) => {
-      if (!(event.target instanceof HTMLElement)) return;
-      if (!event.target.closest(".no-pan")) return false;
-      return true;
-    },
-  });
 }
 
+// Debounced resize handler - only reinitialize PanZoom
+const handleResize = debounce(() => {
+  initializePanZoom();
+}, 300);
+
 document.addEventListener("DOMContentLoaded", () => {
-  render();
+  renderTracks();
+  initializeControls();
+  initializePanZoom();
+
+  // Setup the dialog element
+  const dialog = document.getElementById("about-dialog") as HTMLDialogElement;
+  const logo = document.getElementById("logo");
+  const closeButton = dialog?.querySelector("button");
+
+  if (dialog && logo) {
+    // Add click handler to logo
+    logo.addEventListener("click", () => {
+      dialog.showModal();
+    });
+
+    // Close modal when clicking outside (on backdrop)
+    dialog.addEventListener("click", (e) => {
+      const rect = dialog.getBoundingClientRect();
+      const isInDialog =
+        rect.top <= e.clientY &&
+        e.clientY <= rect.bottom &&
+        rect.left <= e.clientX &&
+        e.clientX <= rect.right;
+      if (!isInDialog) {
+        dialog.close();
+      }
+    });
+
+    // Close modal when clicking close button
+    closeButton?.addEventListener("click", () => {
+      dialog.close();
+    });
+
+    // Close dialog on Escape key (built-in to dialog element)
+  }
+
+  // Add keyboard shortcuts
+  document.addEventListener("keydown", (e) => {
+    // Don't handle shortcuts when dialog is open
+    if (dialog?.open) return;
+
+    // F for fullscreen
+    if (e.key === "f" || e.key === "F") {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // Left/Right for track navigation
+    if (e.key === "ArrowLeft") {
+      playPreviousTrack();
+    } else if (e.key === "ArrowRight") {
+      playNextTrack();
+    }
+
+    // Up/Down for volume
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const newVolume = Math.min(1, audioPlayer.volume + 0.1);
+      audioPlayer.volume = newVolume;
+      volumeSlider.value = newVolume.toString();
+      if (audioPlayer.muted && newVolume > 0) {
+        audioPlayer.muted = false;
+      }
+      updateVolumeIndicator();
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const newVolume = Math.max(0, audioPlayer.volume - 0.1);
+      audioPlayer.volume = newVolume;
+      volumeSlider.value = newVolume.toString();
+      if (newVolume === 0) {
+        audioPlayer.muted = true;
+      }
+      updateVolumeIndicator();
+    }
+  });
+
+  // Check URL hash on load
+  const hash = window.location.hash.slice(1); // Remove the #
+  if (hash) {
+    // Find track by audio filename
+    const trackIndex = tracks.findIndex(
+      (track) => track.audio.replace(".mp3", "") === hash
+    );
+    if (trackIndex !== -1) {
+      playTrack(trackIndex);
+    }
+  }
+
+  // Handle resize and orientation change
+  window.addEventListener("resize", handleResize);
+  window.addEventListener("orientationchange", handleResize);
+  window.addEventListener("fullscreenchange", handleResize);
 });
