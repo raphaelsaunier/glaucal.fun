@@ -1,5 +1,8 @@
 # Glaucal.fun
 
+Image
+![](./static/og-image.png)
+
 ## About
 
 The Glaucal association is based in Courfaivre, in the Swiss Jura. It manages an independent space conducive to artistic creation, mainly musical. In 2023, it celebrates its 15th anniversary (crystal anniversary). On this occasion, Josué and Pascal conceived what would become the Cristal Session: three days of live recordings open to everyone.
@@ -17,8 +20,8 @@ Quentin Barth, Nina Bietry, Kiril Buga, Guillaume Christe, Nil Flückiger, Lione
 
 ## How to run
 
-`yarn` and `yarn start` locally.
-`yarn build` to build it (n.b. you'll have to copy some static files manually because Parcel does some weird shit).
-Source files (not included in this repo) are converted to the most compact and cross-browser compatible format with FFMPEG commands in `convert.sh`
+- `yarn` and `yarn start` locally.
+- `yarn build` to build it (n.b. you'll have to copy some static files manually because Parcel 2 does some weird shit with asset revving).
+- Source audio/video files (not included in this repo) are converted to the most compact and cross-browser compatible format with FFMPEG commands in `convert.sh`.
 
-Most of the funcionality lovingly vibe-coded with Claude 4 Sonnet and Gemini 2.5 Pro, using the bare minimum of Vanilla JS dependencies.
+Most of the core funcionality lovingly vibe-coded with Claude 4 Sonnet and Gemini 2.5 Pro, using the bare minimum of Vanilla JS dependencies.

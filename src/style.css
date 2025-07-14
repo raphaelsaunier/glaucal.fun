@@ -6,7 +6,7 @@
     --animate-marquee: marquee 10s linear infinite;
     @keyframes marquee {
         0% { transform: translateX(0%); }
-        100% { transform: translateX(-100%); }
+        100% { transform: translateX(-50%); }
     }
 }
 @font-face {
@@ -68,6 +68,15 @@ html, body {
 }
 .track__content {
     @apply block mr-9 overflow-hidden whitespace-nowrap;
+}
+.track__title {
+    @apply inline-flex;
+}
+.track__title span {
+    @apply inline-block whitespace-nowrap;
+}
+.track__title span:first-child {
+    @apply pr-8;
 }
 .track.active .track__title, .track:hover .track__title {
     @apply animate-marquee;

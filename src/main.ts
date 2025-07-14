@@ -4,12 +4,8 @@ import deburr from "lodash/deburr";
 import debounce from "lodash/debounce";
 
 const jukebox = document.getElementById("jukebox")!;
-const videoPlayer1 = document.getElementById(
-  "video-player-1"
-)! as HTMLVideoElement;
-const videoPlayer2 = document.getElementById(
-  "video-player-2"
-)! as HTMLVideoElement;
+const pascal = document.getElementById("pascal")! as HTMLVideoElement;
+const josue = document.getElementById("josue")! as HTMLVideoElement;
 const audioPlayer = document.getElementById(
   "audio-player"
 )! as HTMLAudioElement;
@@ -23,8 +19,10 @@ const muteButton = document.querySelector(
   "#volume-control button"
 )! as HTMLButtonElement;
 
-// Track which video player is currently active
-let currentPlayer: "player1" | "player2" = "player1";
+// We have two player instances on the page to support a smooth transition between the two videos
+// Instead of video1 and video2, let's call them Pascal and Josué :D
+let currentPlayer: "pascal" | "josue" = "pascal";
+
 // Track the currently playing track index
 let currentTrackIndex: number = -1;
 
@@ -41,10 +39,9 @@ const block = (e: TouchEvent) => {
 document.addEventListener("gesturestart", block as EventListener);
 document.addEventListener("gesturechange", block as EventListener);
 
-function switchVideoPlayer(newSrc: string) {
-  const activePlayer =
-    currentPlayer === "player1" ? videoPlayer1 : videoPlayer2;
-  const nextPlayer = currentPlayer === "player1" ? videoPlayer2 : videoPlayer1;
+function switchVideoPlayer(track: (typeof tracks)[0]) {
+  const activePlayer = currentPlayer === "pascal" ? pascal : josue;
+  const nextPlayer = currentPlayer === "pascal" ? josue : pascal;
 
   // Make sure the next player starts fully hidden and the current stays visible
   nextPlayer.classList.add("opacity-0");
@@ -53,7 +50,7 @@ function switchVideoPlayer(newSrc: string) {
   activePlayer.classList.add("opacity-100");
 
   // Set the new source on the inactive player
-  nextPlayer.src = `/static/${newSrc}`;
+  nextPlayer.src = `/static/${track.clip}`;
 
   // When the inactive player is ready, start the cross-fade
   const onCanPlay = () => {
@@ -71,8 +68,11 @@ function switchVideoPlayer(newSrc: string) {
 
     // After transition completes, pause the now-hidden player
     setTimeout(() => {
+      // Update theme when the new video starts playing
+      document.documentElement.classList.toggle("dark", !!track.dark);
+      document.documentElement.classList.toggle("light", !track.dark);
       activePlayer.pause();
-    }, 500); // Match the CSS transition duration
+    }, 100);
   };
 
   nextPlayer.addEventListener("canplay", onCanPlay, { once: true });
@@ -98,10 +98,6 @@ function playTrack(trackIndex: number) {
     trackElements[trackIndex].classList.add("active");
   }
 
-  // Update theme
-  document.documentElement.classList.toggle("dark", !!track.dark);
-  document.documentElement.classList.toggle("light", !!track.dark);
-
   // Update URL hash using the audio filename without extension
   const hashName = track.audio.replace(".mp3", "");
   history.replaceState(null, "", `#${hashName}`);
@@ -110,7 +106,7 @@ function playTrack(trackIndex: number) {
   document.title = `${track.title} | Glaucal Cristal Session | Jukebox 🎶`;
 
   // Switch video and audio
-  switchVideoPlayer(track.clip);
+  switchVideoPlayer(track);
   audioPlayer.setAttribute("src", `/static/${track.audio}`);
   audioPlayer.play();
 }
@@ -154,6 +150,7 @@ function initializePanZoom() {
 
   const dialog = document.getElementById("about-dialog") as HTMLDialogElement;
 
+  /** @see https://github.com/anvaka/panzoom */
   panZoomInstance = PanZoom(jukebox, {
     maxZoom: 2,
     minZoom: 0.2,
@@ -161,16 +158,16 @@ function initializePanZoom() {
     bounds: true,
     onTouch: (event) => {
       // Prevent panning when dialog is open
-      if (dialog?.open) return false;
       if (!(event.target instanceof HTMLElement)) return;
-      if (!event.target.closest(".no-pan")) return false;
+      if (dialog?.open || !event.target.closest(".no-pan")) {
+        return false;
+      }
     },
     beforeMouseDown: (event) => {
       // Prevent panning when dialog is open
-      if (dialog?.open) return false;
+      if (dialog?.open) return true;
       if (!(event.target instanceof HTMLElement)) return;
-      if (!event.target.closest(".no-pan")) return false;
-      return true;
+      if (event.target.closest(".no-pan")) return true;
     },
   });
 }
@@ -188,7 +185,10 @@ function renderTracks() {
     div.style.width = `${w + offsetX}px`;
     div.style.height = `${h + offsetY}px`;
     div.innerHTML = `<div class="track__content">
-      <div class="track__title">${deburr(track.title)}</div>
+      <div class="track__title">
+        <span>${deburr(track.title)}</span>
+        <span>${deburr(track.title)}</span>
+      </div>
     </div>`;
     div.title = track.title;
     div.addEventListener("click", (ev) => {
@@ -242,7 +242,7 @@ function initializeControls() {
 // Debounced resize handler - only reinitialize PanZoom
 const handleResize = debounce(() => {
   initializePanZoom();
-}, 300);
+}, 300) as () => void;
 
 document.addEventListener("DOMContentLoaded", () => {
   renderTracks();
@@ -337,7 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Handle resize and orientation change
-  window.addEventListener("resize", handleResize);
-  window.addEventListener("orientationchange", handleResize);
-  window.addEventListener("fullscreenchange", handleResize);
+  window.addEventListener("resize", () => handleResize());
+  window.addEventListener("orientationchange", () => handleResize());
+  document.addEventListener("fullscreenchange", () => handleResize());
 });

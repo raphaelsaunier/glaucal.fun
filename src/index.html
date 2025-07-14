@@ -26,8 +26,8 @@
     <meta property="og:url" content="https://glaucal.fun" />
     <script src="./main.ts" type="module"></script>
   </head>
-  <body class="transition-all overflow-hidden">
-    <div id="logo">
+  <body class="overflow-hidden transition-all">
+    <header id="logo">
       <img
         src="/static/logo-dark.png"
         alt="Glaucal Cristal Session"
@@ -38,31 +38,33 @@
         alt="Glaucal Cristal Session"
         class="block dark:hidden"
       />
-    </div>
+    </header>
 
-    <div id="jukebox" class="h-[1440px] w-[2550px]">
-      <video
-        id="video-player-1"
-        class="video-player"
-        preload="auto"
-        autoplay
-        loop
-        muted
-        playsinline
-        poster="/static/poster.png"
-      ></video>
-      <video
-        id="video-player-2"
-        class="video-player"
-        preload="auto"
-        autoplay
-        loop
-        muted
-        playsinline
-        poster="/static/poster.png"
-      ></video>
-      <audio id="audio-player"></audio>
-    </div>
+    <main class="absolute inset-0">
+      <div id="jukebox" class="h-[1440px] w-[2550px]">
+        <video
+          id="pascal"
+          class="video-player"
+          preload="auto"
+          autoplay
+          loop
+          muted
+          playsinline
+          poster="/static/poster.png"
+        ></video>
+        <video
+          id="josue"
+          class="video-player"
+          preload="auto"
+          autoplay
+          loop
+          muted
+          playsinline
+          poster="/static/poster.png"
+        ></video>
+        <audio id="audio-player"></audio>
+      </div>
+    </main>
 
     <div id="volume-control" class="no-pan user-select-none">
       <img src="/static/volume-high.png" alt="Volume" class="h-10" />
